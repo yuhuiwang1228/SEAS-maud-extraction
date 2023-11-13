@@ -28,3 +28,11 @@ Training uses around 22 GB of GPU memory.
 ## Test runs with best-performing hyperparameters
 
 `./run_maud_best_hp.sh`
+
+## Unzip files
+```
+cd ./train_models/test_split
+sudo apt-get install unzip
+unzip predict.zip
+unzip roberta-base-maud-lr-1e-4.zip
+```
