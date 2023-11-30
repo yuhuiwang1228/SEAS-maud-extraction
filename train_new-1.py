@@ -451,7 +451,10 @@ def load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=Fal
         logger.info("Loading features from balanced cached file %s", subset_cached_features_file)
         dataset = torch.load(subset_cached_features_file)["dataset"]
         features, examples = None, None
+<<<<<<< HEAD
 
+=======
+>>>>>>> 264e099664c9e208902354c9fdfee01cefb4302b
     elif os.path.exists(cached_features_file) and not args.overwrite_cache:
         logger.info("Loading features from cached file %s", cached_features_file)
         features_and_dataset = torch.load(cached_features_file)
@@ -470,11 +473,31 @@ def load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=Fal
     else:
         logger.info("Creating features from dataset file at %s", input_dir)
 
+<<<<<<< HEAD
         processor = SquadV2Processor() if args.version_2_with_negative else SquadV1Processor()
         if evaluate:
             examples = processor.get_dev_examples(args.data_dir, filename=args.predict_file)
         else:
             examples = processor.get_train_examples(args.data_dir, filename=args.train_file)
+=======
+        if not args.data_dir and ((evaluate and not args.predict_file) or (not evaluate and not args.train_file)):
+            try:
+                import tensorflow_datasets as tfds
+            except ImportError:
+                raise ImportError("If not data_dir is specified, tensorflow_datasets needs to be installed.")
+
+            if args.version_2_with_negative:
+                logger.warn("tensorflow_datasets does not handle version 2 of SQuAD.")
+
+            tfds_examples = tfds.load("squad")
+            examples = SquadV1Processor().get_examples_from_dataset(tfds_examples, evaluate=evaluate)
+        else:
+            processor = SquadV2Processor() if args.version_2_with_negative else SquadV1Processor()
+            if evaluate:
+                examples = processor.get_dev_examples(args.data_dir, filename=args.predict_file)
+            else:
+                examples = processor.get_train_examples(args.data_dir, filename=args.train_file)
+>>>>>>> 264e099664c9e208902354c9fdfee01cefb4302b
 
         features, dataset = squad_convert_examples_to_features(
             examples=examples,
@@ -808,8 +831,11 @@ def main():
         logger.info(" global_step = %s, average loss = %s", global_step, tr_loss)
 
         if (args.local_rank == -1 or torch.distributed.get_rank() == 0):
+<<<<<<< HEAD
             if not os.path.exists(args.output_dir):
                 os.makedirs(args.output_dir)
+=======
+>>>>>>> 264e099664c9e208902354c9fdfee01cefb4302b
             logger.info("Saving model checkpoint to %s", args.output_dir)
             model_to_save = model.module if hasattr(model, "module") else model
             model_to_save.save_pretrained(args.output_dir)
