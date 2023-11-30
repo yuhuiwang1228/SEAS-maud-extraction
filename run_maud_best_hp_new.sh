@@ -7,13 +7,12 @@ for run_num in 1; do
       output_dir=./train_models/test_${cache_type}/roberta-base-maud-lr-$lr
       model_dir=./train_models/test_${cache_type}/roberta-base-maud-lr-$lr
       predict_dir=./train_models/test_${cache_type}/predict-sub-$epoch_num
-      train_file = ./maud_data/maud_squad_${cache_type}_answers/maud_squad_test_train_jason.json
+      train_file=./maud_data/maud_squad_${cache_type}_answers/maud_squad_train_sub_jason.json
       predict_file=./maud_data/maud_squad_${cache_type}_answers/maud_squad_test_sub_jason.json
-      python -m torch.distributed.launch --nproc_per_node=4
-      python train.py \
+      python train_new.py \
               --output_dir $output_dir \
               --model_dir $model_dir \
-              --predict_dir $predict_dir
+              --predict_dir $predict_dir \
               --model_type roberta \
               --model_name_or_path roberta-base \
               --train_file $train_file \
@@ -28,7 +27,6 @@ for run_num in 1; do
               --max_answer_length 512 \
               --doc_stride 256 \
               --save_steps 1000 \
-              --overwrite_output_dir \
               --threads 6 \
               --do_train \
               --do_eval \
