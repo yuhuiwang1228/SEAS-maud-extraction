@@ -4,7 +4,7 @@ eval_mode=test
 for run_num in 1; do
   for epoch_num in 1; do
     for lr in 1e-4; do
-      output_dir=./train_models/test_${cache_type}/roberta-base-maud-lr-$lr
+      output_dir=./train_models/test_${cache_type}/roberta-base-maud-lr-$epoch_num
       model_dir=./train_models/test_${cache_type}/model-sub-$epoch_num
       predict_dir=./train_models/test_${cache_type}/predict-sub-$epoch_num
       train_file=./maud_data/maud_squad_${cache_type}_answers/maud_squad_train_sub_jason.json
