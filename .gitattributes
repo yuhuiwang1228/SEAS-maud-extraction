@@ -1,5 +1,4 @@
-
-train_model/test_split/model-sub-1.rar filter=lfs diff=lfs merge=lfs -text
-train_model/test_split/roberta-base-maud-lr-1e-4.zip filter=lfs diff=lfs merge=lfs -text
+train_models/test_split/model-sub-1.rar filter=lfs diff=lfs merge=lfs -text
+train_models/test_split/roberta-base-maud-lr-1e-4.zip filter=lfs diff=lfs merge=lfs -text
 _cached_features/data-sub-1/balanced_subset_cached_train_roberta-base_512 filter=lfs diff=lfs merge=lfs -text
 _cached_features/data-sub-1/cached_dev_roberta-base_512 filter=lfs diff=lfs merge=lfs -text
