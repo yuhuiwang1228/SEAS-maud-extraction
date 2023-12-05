@@ -4,7 +4,7 @@ mode=full
 
 for run_num in 1; do
   for epoch_num in 10; do
-    for lr in 1e-4; do
+    for lr in 1e-6; do
       output_dir=./train_models/test_${cache_type}/model-$mode-$run_num-$epoch_num
       model_dir=./train_models/test_${cache_type}/roberta-base-maud-lr-$run_num
       predict_dir=./train_models/test_${cache_type}/predict-$mode-$run_num-$epoch_num

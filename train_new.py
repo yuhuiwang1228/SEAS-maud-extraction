@@ -135,7 +135,7 @@ def train(args, train_dataset, model, tokenizer):
     else:
         t_total = len(train_dataloader) // args.gradient_accumulation_steps * args.num_train_epochs
 
-    if args.do_freeze:
+    if args.do_freeze: #3-4,1e-6,
         # Freeze all parameters first
         for param in model.parameters():
             param.requires_grad = False
@@ -809,7 +809,7 @@ def main():
 
     
     # Training
-    train_dataset = load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=False)
+    # train_dataset = load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=False)
     
     if args.do_train:
         train_dataset = load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=False)
