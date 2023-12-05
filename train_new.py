@@ -226,8 +226,10 @@ def train(args, train_dataset, model, tokenizer):
     # Added here for reproductibility
     set_seed(args)
 
-    for _ in train_iterator:
+    for e in train_iterator:
         epoch_iterator = tqdm(train_dataloader, desc="Iteration", disable=args.local_rank not in [-1, 0])
+        epoch_loss = 0
+        epoch_step = 0
         for step, batch in enumerate(epoch_iterator):
 
             # Skip past any already trained steps if resuming training
@@ -266,7 +268,8 @@ def train(args, train_dataset, model, tokenizer):
                     scaled_loss.backward()
             else:
                 loss.backward()
-
+            
+            epoch_loss += loss.item()
             tr_loss += loss.item()
             if (step + 1) % args.gradient_accumulation_steps == 0:
                 if args.fp16:
@@ -277,6 +280,7 @@ def train(args, train_dataset, model, tokenizer):
                 optimizer.step()
                 scheduler.step()  # Update learning rate schedule
                 model.zero_grad()
+                epoch_step += 1
                 global_step += 1
 
                 # Log metrics
@@ -293,6 +297,9 @@ def train(args, train_dataset, model, tokenizer):
             if args.max_steps > 0 and global_step > args.max_steps:
                 epoch_iterator.close()
                 break
+
+        logger.info(f"Average loss for epoch {e}: {(epoch_loss / epoch_step):.4f}")
+
         if args.max_steps > 0 and global_step > args.max_steps:
             train_iterator.close()
             break
@@ -802,6 +809,8 @@ def main():
 
     
     # Training
+    train_dataset = load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=False)
+    
     if args.do_train:
         train_dataset = load_and_cache_examples(args, tokenizer, evaluate=False, output_examples=False)
         global_step, tr_loss = train(args, train_dataset, model, tokenizer)
